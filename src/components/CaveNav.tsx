@@ -16,10 +16,10 @@ const CaveNav: FC = () => {
                     className={({isActive}) => isActive ? 'active' : ''}>
                 Home Of
             </NavLink>
-            {!isLoading && !isAuthenticated && <button onClick={() => loginWithRedirect()}>Log In</button>}
-            {!isLoading && isAuthenticated && <button onClick={() => logout({logoutParams: {
+            {!isLoading && !isAuthenticated && <a onClick={() => loginWithRedirect()}>Log In</a>}
+            {!isLoading && isAuthenticated && <a className="" onClick={() => logout({logoutParams: {
                 returnTo: window.location.origin
-                }})}>Log Out</button>}
+                }})}>Log Out</a>}
         </nav>
     )
 }
