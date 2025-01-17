@@ -1,4 +1,7 @@
-import { FC, use } from 'react'
+import { FC, use} from 'react'
+import { Outlet } from "react-router";
+import CrittersList from "@/components/CrittersList.tsx";
+import { CrittersProvider} from "@/components/CrittersContext";
 
 interface CrittersProps {
     critters: Promise<Critter[]>
@@ -7,11 +10,12 @@ interface CrittersProps {
 const Critters: FC<CrittersProps> = ({critters}) => {
     const resolvedCritters = use(critters)
     return (
-        <ul className="no-bullets">
-            {resolvedCritters.map((c: Critter) => (
-                <li key={c.nickname}>{c.name}</li>
-            ))}
-        </ul>
+        <>
+            <CrittersProvider initialCritters={resolvedCritters}>
+                <CrittersList />
+                <Outlet />
+            </CrittersProvider>
+        </>
     )
 }
 

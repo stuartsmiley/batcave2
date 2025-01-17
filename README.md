@@ -1,14 +1,16 @@
-# React + TypeScript + Vite
+# batcave2
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React based single page app designed to talk to batcave-api backend to trigger the garage door opener.
 
-Currently, two official plugins are available:
+# Using
+* React
+* TypeScript
+* Vite
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Prerequites
-*latest version of node and npm
+## Prerequisites
+* nvm
+* latest version of node and npm 
+* yarn (why version 1.x instead of 2.x)
 
 ## How we got started
 ```
