@@ -1,34 +1,22 @@
-import {useEffect, useState} from 'react'
-import './App.css'
-import useWebSocket from "react-use-websocket";
+import './App.css';
+import {Route, Routes} from "react-router";
+import ProtectedComponent from "@/components/ProtectedComponent.tsx";
+import AppLayout from "@/layouts/AppLayout.tsx";
+import BatCave from "@/components/BatCave.tsx";
+import HomeOf from "@/components/HomeOf.tsx";
+import CritterFormWrapper from "@/components/CritterFormWrapper.tsx";
 
 function App() {
-  const [count, setCount] = useState(0)
-  const { sendMessage, lastMessage, readyState } = useWebSocket("ws://192.168.1.251:8000/ws/stu")
-
-  useEffect(() => {
-      console.log(`readstate change to ${readyState}`)
-  }, [readyState])
-  const triggerBatcave = () => {
-      setCount(count + 1)
-      sendMessage("POW")
-  }
-
-  return (
-    <>
-
-      <div className="card">
-        <button className="pow" onClick={triggerBatcave} disabled={readyState !== 1 }>
-          POW!
-        </button>
-        <p>
-            <span>The Bat Cave is {readyState}.</span> Bat cave trigger count: {count}
-        </p>
-          {lastMessage && <p>Last message: {lastMessage.data}</p>}
-      </div>
-
-    </>
-  )
+    return (
+        <Routes>
+            <Route element={<ProtectedComponent component={AppLayout} />}>
+                <Route index element={<BatCave />} />
+                <Route path="home" element={<HomeOf />} >
+                    <Route path="add" element={<CritterFormWrapper nickname=""/>} />
+                </Route>
+            </Route>
+        </Routes>
+    )
 }
 
 export default App
