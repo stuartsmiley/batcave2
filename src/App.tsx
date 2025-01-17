@@ -4,7 +4,7 @@ import useWebSocket from "react-use-websocket";
 
 function App() {
   const [count, setCount] = useState(0)
-  const { sendMessage, lastMessage, readyState } = useWebSocket("ws://localhost:8000/ws/stu")
+  const { sendMessage, lastMessage, readyState } = useWebSocket("ws://192.168.1.251:8000/ws/stu")
 
   useEffect(() => {
       console.log(`readstate change to ${readyState}`)

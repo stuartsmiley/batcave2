@@ -9,3 +9,8 @@ type Critter = {
     species: Species;
     is_freak: boolean;
 }
+
+type CritterAction = {
+    type: string;
+    payload: any;
+}

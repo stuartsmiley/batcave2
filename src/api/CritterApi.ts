@@ -3,7 +3,9 @@ const critterApi = {
         const requestHeaders = new Headers()
         requestHeaders.append("Accept", "application/json")
         try {
-            const response = await fetch('http://localhost:8000/critters', {
+            const apiUrl: string = import.meta.env.VITE_API_URL
+            console.log(`The API URL is ${apiUrl}`)
+            const response = await fetch(`${apiUrl}/critters`, {
                 method: "GET",
                 headers: requestHeaders,
                 mode: 'cors',
@@ -14,27 +16,43 @@ const critterApi = {
                 return []
             }
             const json: Critter[]  = await response.json()
-            console.log(`The reponse has been returned`, json)
+            console.log(`The response has been returned`, json)
             return json
         } catch (error: any) {
             console.error(error.message, error)
             return []
         }
-
-        // const cat = {id: 9685, name: "Felis catus Linnaeus"}
-        // const human = {id: 9606, name: "Homo sapiens"}
-        // const critters: Critter[] = [
-        //     {name:'Bruce Wayne', nickname:'BW', is_freak: true, species:cat},
-        //     {name:'Lu-Lu Fishpaw', nickname:'LuLu', is_freak: true, species:cat},
-        //     {name:'Stuart Smiley', nickname:'Stu', is_freak: false, species:human},
-        //     {name:'Jennifer Lentz', nickname:'Doc', is_freak: false, species:human}
-        // ]
-        // return new Promise((resolve) => {
-        //     setTimeout(() => {
-        //         resolve(critters)
-        //     }, 3000)
-        // })
+    },
+    addCritter: async (something: any): Promise<String> => {
+        console.log(`Calling addCritter with ${JSON.stringify(something)}`)
+        const requestHeaders = new Headers()
+        requestHeaders.append("Accept", "application/json")
+        requestHeaders.append("Content-Type", "application/json")
+        try {
+            const apiUrl: string = import.meta.env.VITE_API_URL
+            const response = await fetch(`${apiUrl}/critter`, {
+                method: "POST",
+                headers: requestHeaders,
+                mode: 'cors',
+                body: JSON.stringify(something)
+            })
+            console.log('MY RESPONSE', response)
+            if (response.status !== 201) {
+                console.warn('fetchCritters RESPONSE not OK', response)
+                return "OH NO"
+            }
+            const json: Critter  = await response.json()
+            console.log(`The response has been returned`, json)
+            return "OK"
+        } catch (error: any) {
+            console.error(error.message, error)
+            return error.message
+        }
     }
+
+
+
+
 }
 
 export default critterApi
