@@ -76,3 +76,28 @@ export default tseslint.config({
   },
 })
 ```
+
+## Installing on Raspberry PI
+* Follow instructions at https://caddyserver.com/docs/install#debian-ubuntu-raspbian for installing **caddy**
+* Build for the pi
+```
+yarn build --mode pi
+```
+* tar up and move to pi
+```
+tar -cvf batcave2.tar .
+scp batcave2.tar batman@{pi_ip}:
+cd ../caddy
+scp caddy.json batmain@{pi_ip}:
+```
+* back on the pi
+```
+cd /srv
+sudo mkdir batcave2
+cd batcave2
+tar -xvf /home/batman/batcave2.tar
+cd ~
+curl localhost:2019/load -H "Content-Type: application/json" -d @caddy.json
+curl localhost:2019/config/
+curl localhost:2015
+```

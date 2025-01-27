@@ -9,7 +9,6 @@ interface CritterProviderProps {
 }
 export function CrittersProvider({initialCritters, children}: CritterProviderProps) {
     const [critters, dispatch] = useReducer(crittersReducer, initialCritters)
-    console.log('DOES DISPATCH HAVE A VALUE?', dispatch)
     return (
         <CrittersContext.Provider value={critters}>
             <CrittersDispatchContext.Provider value={dispatch}>
@@ -30,7 +29,6 @@ export function useCrittersDispatch() {
 function crittersReducer(critters: Critter[], action: CritterAction): Critter[] {
     switch (action.type) {
         case 'add': {
-            console.log("ADD ACTION", action)
             return action.payload
         }
         case 'delete': {

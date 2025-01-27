@@ -25,7 +25,7 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
-      'react-copiler/react-compiler': 'err'
+      'react-compiler/react-compiler': 'error'
     },
   },
 )

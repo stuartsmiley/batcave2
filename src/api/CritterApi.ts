@@ -1,10 +1,10 @@
 const critterApi = {
-    fetchCritters: async (): Promise<Critter[]> => {
+    fetchCritters: async (accessToken: string): Promise<Critter[]> => {
         const requestHeaders = new Headers()
         requestHeaders.append("Accept", "application/json")
+        requestHeaders.append('Authorization', 'Bearer ' + accessToken)
         try {
             const apiUrl: string = import.meta.env.VITE_API_URL
-            console.log(`The API URL is ${apiUrl}`)
             const response = await fetch(`${apiUrl}/critters`, {
                 method: "GET",
                 headers: requestHeaders,
@@ -23,11 +23,11 @@ const critterApi = {
             return []
         }
     },
-    addCritter: async (something: any): Promise<String> => {
+    addCritter: async (something: any, accessToken: string): Promise<String> => {
         console.log(`Calling addCritter with ${JSON.stringify(something)}`)
         const requestHeaders = new Headers()
-        requestHeaders.append("Accept", "application/json")
         requestHeaders.append("Content-Type", "application/json")
+        requestHeaders.append('Authorization', 'Bearer ' + accessToken)
         try {
             const apiUrl: string = import.meta.env.VITE_API_URL
             const response = await fetch(`${apiUrl}/critter`, {
@@ -39,20 +39,18 @@ const critterApi = {
             console.log('MY RESPONSE', response)
             if (response.status !== 201) {
                 console.warn('fetchCritters RESPONSE not OK', response)
-                return "OH NO"
+                const info: any  = await response.json()
+                console.log('DID WE GET INFO', info)
+                return info ? info.detail : "OH NO, something went wrong"
             }
             const json: Critter  = await response.json()
             console.log(`The response has been returned`, json)
             return "OK"
         } catch (error: any) {
-            console.error(error.message, error)
+            console.error(`Caught the error: ${error.message}!`, error)
             return error.message
         }
     }
-
-
-
-
 }
 
 export default critterApi

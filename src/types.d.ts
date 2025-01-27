@@ -14,3 +14,8 @@ type CritterAction = {
     type: string;
     payload: any;
 }
+
+type Authorization = {
+    accessToken: string;
+    permissions: string[];
+}
