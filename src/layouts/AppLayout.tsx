@@ -1,4 +1,4 @@
-import { FC } from "react";
+import {FC} from "react";
 import batsignal from "@/assets/batsignal.png";
 import {Outlet} from "react-router";
 import Footer from "@/components/Footer.tsx";

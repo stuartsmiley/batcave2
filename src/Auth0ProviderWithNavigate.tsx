@@ -10,9 +10,7 @@ export const Auth0ProviderWithNavigate = ({ children }: WithNavProps) => {
     const domain = import.meta.env.VITE_AUTH0_DOMAIN;
     const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
     const redirectUri = import.meta.env.VITE_AUTH0_CALLBACK_URL;
-    // const domain = 'dev-zavey0gsydvranaq.us.auth0.com';
-    // const clientId = 'lGUuxfDOKTYHD5L8wkQgW55xirYzEcnj';
-    // const redirectUri = "http://localhost:5173";
+    const audience: any = import.meta.env.VITE_AUTH0_AUDIENCE;
 
     const onRedirectCallback = (appState: any) => {
         navigate(appState?.returnTo || window.location.pathname);
@@ -28,6 +26,7 @@ export const Auth0ProviderWithNavigate = ({ children }: WithNavProps) => {
             clientId={clientId}
             authorizationParams={{
                 redirect_uri: redirectUri,
+                audience: audience
             }}
             onRedirectCallback={onRedirectCallback}
         >

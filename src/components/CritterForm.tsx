@@ -1,11 +1,12 @@
 import {ChangeEvent, Dispatch, FC, useActionState, useEffect, useState} from 'react'
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert"
 import Form from "react-bootstrap/Form"
 import {useNavigate} from "react-router";
 import {FormLabel} from "react-bootstrap";
 import CritterApi from "@/api/CritterApi";
 import { useCrittersDispatch } from "@/components/CrittersContext";
-import Card from 'react-bootstrap/Card'
+import {useAuthorization} from "@/providers/AuthorizationContext.tsx";
 
 const species: Species[] = [
     {id: 9606, name: 'Homo sapiens'},
@@ -34,6 +35,7 @@ interface CritterFormProps {
 
 const CritterForm: FC<CritterFormProps> = ({critter}) => {
     const [formData, setFormData] = useState<Critter>(critter)
+    const {accessToken} = useAuthorization()
     let navigate = useNavigate()
     const dispatch = useCrittersDispatch()
     // @ts-ignore
@@ -41,20 +43,20 @@ const CritterForm: FC<CritterFormProps> = ({critter}) => {
         console.log('prevState', prevState)
         console.log('formData', formData)
         const toSubmit = convertFormToCritter(formData)
-        const message = await CritterApi.addCritter(toSubmit)
+        console.log(`Calling addCritter to add new critter ${toSubmit.nickname}`)
+        const message = await CritterApi.addCritter(toSubmit, accessToken)
         // @ts-ignore
         critter['saved'] = message
         return critter
     }, critter)
     useEffect(() => {
         const addCritters = async (dispatch: Dispatch<CritterAction>) => {
-            const newCritters = await CritterApi.fetchCritters()
+            const newCritters = await CritterApi.fetchCritters(accessToken)
             dispatch({type: 'add', payload: newCritters})
         }
         console.log(`current state: ${JSON.stringify(state)} and isPending: ${isPending}`)
         // @ts-ignore
         if (state['saved'] == 'OK' && !isPending) {
-            console.log(`DISPATCH IS ${typeof dispatch}`, dispatch)
             if (!!dispatch) {
                 addCritters(dispatch)
             }
@@ -66,11 +68,11 @@ const CritterForm: FC<CritterFormProps> = ({critter}) => {
     }, [state, isPending])
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        console.log('Event', event)
+        // console.log('Event', event)
         setFormData({...formData, [event.target.name]: event.target.value})
     }
     const handleSpeciesChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        console.log(`the new value ${event.currentTarget.value}`)
+        // console.log(`the new value ${event.currentTarget.value}`)
         const val = parseInt(event.currentTarget.value)
         const selected = species.find((s) => s.id ===  val)
         setFormData({...formData, 'species': selected!})
@@ -81,12 +83,12 @@ const CritterForm: FC<CritterFormProps> = ({critter}) => {
     return (
         <form action={formAction}>
             {/* @ts-ignore */}
-            {!isPending && !!state['saved'] && <Card bg="danger" text="white" className="mb-2">
-                <Card.Body>
+            {!isPending && !!state['saved'] &&
+                <Alert variant="danger">
+                    <Alert.Heading>Error</Alert.Heading>
                     {/* @ts-ignore */}
-                    <Card.Text>{state.saved}</Card.Text>
-                </Card.Body>
-            </Card>}
+                    <p>{state.saved}</p>
+                </Alert>}
             <div className="mb-3">
                 <label htmlFor="nameInput" className="form-label">Name</label>
                 <input type="text" className="form-control" id="nameInput"
@@ -112,7 +114,7 @@ const CritterForm: FC<CritterFormProps> = ({critter}) => {
                 <Form.Select id="speciesInput" name="species" onChange={handleSpeciesChange}
                              value={formData.species.id}>
                     {species.map((s) => (
-                        <option value={s.id}>{s.name}</option>
+                        <option key={`${s.id}key`} value={s.id}>{s.name}</option>
                     ))}
                 </Form.Select>
             </div>
