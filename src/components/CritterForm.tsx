@@ -18,8 +18,7 @@ const convertFormToCritter = (formData: any)=> {
     formData.forEach((value: string, key: string) => {
         if (key === 'species') {
             const speciesId = parseInt(value)
-            const mySpecies = species.find((s: Species) => s.id === speciesId)
-            critter[key] = mySpecies
+            critter['species_id'] = speciesId
         } else if (key === 'is_freak') {
             critter[key] = value === 'true'
         } else {
