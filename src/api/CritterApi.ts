@@ -50,6 +50,29 @@ const critterApi = {
             console.error(`Caught the error: ${error.message}!`, error)
             return error.message
         }
+    },
+    fetchKitchenData: async (accessToken: string): Promise<KitchenData[]> => {
+        const requestHeaders = new Headers()
+        requestHeaders.append("Accept", "application/json")
+        requestHeaders.append('Authorization', 'Bearer ' + accessToken)
+        try {
+            const apiUrl: string = import.meta.env.VITE_API_URL
+            const response = await fetch(`${apiUrl}/sensor/kitchen/24`, {
+                method: "GET",
+                headers: requestHeaders,
+                mode: 'cors',
+            })
+            if (!response.ok) {
+                console.warn('fetchKitchenData RESPONSE not OK', response)
+                return []
+            }
+            const json: KitchenData[] = await response.json()
+            console.log(`Kitchen data response:`, json)
+            return json
+        } catch (error: any) {
+            console.error('fetchKitchenData error:', error.message, error)
+            return []
+        }
     }
 }
 

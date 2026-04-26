@@ -4,6 +4,7 @@ import ProtectedComponent from "@/components/ProtectedComponent.tsx";
 import AppLayout from "@/layouts/AppLayout.tsx";
 import BatCave from "@/components/BatCave.tsx";
 import HomeOf from "@/components/HomeOf.tsx";
+import Kitchen from "@/components/Kitchen.tsx";
 import CritterFormWrapper from "@/components/CritterFormWrapper.tsx";
 import Unauthorized from "@/components/Unauthorized.tsx";
 import AuthorizationProvider from "@/providers/AuthorizationContext.tsx";
@@ -17,6 +18,7 @@ function App() {
                 <Route path="home" element={<HomeOf />} >
                     <Route path="add" element={<CritterFormWrapper nickname=""/>} />
                 </Route>
+                <Route path="kitchen" element={<Kitchen />} />
                 <Route path="unauthorized" element={<Unauthorized />} />
             </Route>
         </Routes>

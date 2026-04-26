@@ -16,6 +16,9 @@ const CaveNav: FC = () => {
                     className={({isActive}) => isActive ? 'active' : ''}>
                 Home Of
             </NavLink>
+            <NavLink to="/kitchen" end className={({isActive}) => isActive ? 'active' : ''}>
+                Kitchen
+            </NavLink>
             {!isLoading && !isAuthenticated && <a onClick={() => loginWithRedirect()}>Log In</a>}
             {!isLoading && isAuthenticated && <a className="" onClick={() => logout({logoutParams: {
                 returnTo: window.location.origin
